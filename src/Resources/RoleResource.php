@@ -78,17 +78,15 @@ class RoleResource extends Resource
                                     ->default(config('filament-spatie-roles-permissions.default_guard_name'))
                                     ->required(),
 
-                                Select::make('permissions')
-                                    ->columnSpanFull()
-                                    ->multiple()
+                                CheckboxList::make('permissions')
+                                    ->columns(4)
                                     ->label(__('filament-spatie-roles-permissions::filament-spatie.field.permissions'))
                                     ->relationship(
                                         name: 'permissions',
                                         modifyQueryUsing: fn (Builder $query) => $query->orderBy('name')->orderBy('name'),
                                     )
                                     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->name} ({$record->guard_name})")
-                                    ->searchable(['name', 'guard_name']) // searchable on both name and guard_name
-                                    ->preload(config('filament-spatie-roles-permissions.preload_permissions')),
+                                    ->searchable(),
 
                                 Select::make(config('permission.column_names.team_foreign_key', 'team_id'))
                                     ->label(__('filament-spatie-roles-permissions::filament-spatie.field.team'))
